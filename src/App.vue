@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <img :src="require('~/assets/images/logo.png')" alt="">
     <router-view/>
   </div>
 </template>
@@ -27,12 +26,10 @@ export default {
     pointer-events: none;
     /* // 像微信浏览器还是无法禁止，加上这行样式即可 */
   }
-  /* // 禁止长按选择文字 */
   div {
+    /* // 禁止长按选择文字 */
     -webkit-user-select: none;
-  }
-  /* // 禁止长按呼出菜单 */
-  div {
+    /* // 禁止长按呼出菜单 */
     -webkit-touch-callout: none;
   }
 </style>
