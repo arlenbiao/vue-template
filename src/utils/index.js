@@ -1,5 +1,5 @@
 // 加
-function add (...val) {
+function add(...val) {
   let max = 0
   let count = 0
   for (let i = 0; i < val.length; i++) {
@@ -18,7 +18,7 @@ function add (...val) {
 }
 
 // 减
-function sub (...val) {
+function sub(...val) {
   let max = 0
   let count = val[0] | 0
   for (let i = 0; i < val.length; i++) {
@@ -37,22 +37,30 @@ function sub (...val) {
 }
 
 // 乘
-function mul (arg1, arg2) {
+function mul(arg1, arg2) {
   let m = 0
   let s1 = arg1.toString()
   let s2 = arg2.toString()
-  try { m += s1.split('.')[1].length } catch (e) {}
-  try { m += s2.split('.')[1].length } catch (e) {}
+  try {
+    m += s1.split('.')[1].length
+  } catch (e) {}
+  try {
+    m += s2.split('.')[1].length
+  } catch (e) {}
   return Number(s1.replace('.', '')) * Number(s2.replace('.', '')) / Math.pow(10, m)
 }
 
 // 除
-function except (arg1, arg2) {
+function except(arg1, arg2) {
   let t1 = 0
   let t2 = 0
   let r1, r2
-  try { t1 = arg1.toString().split('.')[1].length } catch (e) {}
-  try { t2 = arg2.toString().split('.')[1].length } catch (e) {}
+  try {
+    t1 = arg1.toString().split('.')[1].length
+  } catch (e) {}
+  try {
+    t2 = arg2.toString().split('.')[1].length
+  } catch (e) {}
 
   r1 = Number(arg1.toString().replace('.', ''))
 
@@ -64,7 +72,7 @@ function except (arg1, arg2) {
  * @param {*} val
  * @param {*} count 默认2位小数
  */
-function formatPriceToFixed (val, count = 2) {
+function formatPriceToFixed(val, count = 2) {
   if (!val) return ''
 
   if (count <= 0) {
@@ -76,7 +84,7 @@ function formatPriceToFixed (val, count = 2) {
  * 处理聊天时间戳
  * @returns {*}
  */
-function ChatformatTime (time) {
+function ChatformatTime(time) {
   time = parseInt(time / 1000)
   time = +time * 1000
   const d = new Date(time)
@@ -101,6 +109,19 @@ function ChatformatTime (time) {
   // }
   return d.getMonth() + 1 + '月' + d.getDate() + '日'
 }
+/**
+ * 平滑滚动到页面顶部
+ */
+function scrollToTop() {
+  const c = document.documentElement.scrollTop || document.body.scrollTop;
+  if (c > 0) {
+    window.requestAnimationFrame(scrollToTop);
+    window.scrollTo(0, c - c / 8);
+  }
+}
+
+// 事例
+scrollToTop()
 
 export default {
   add,
@@ -108,5 +129,6 @@ export default {
   mul,
   except,
   formatPriceToFixed,
-  ChatformatTime
+  ChatformatTime,
+  scrollToTop
 }

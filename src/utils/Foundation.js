@@ -4,7 +4,7 @@
  * @param format 转换格式
  * @returns {*|string}
  */
-function unixToDate (unix, format) {
+function unixToDate(unix, format) {
   if (!unix) return unix
   let _format = format || 'yyyy-MM-dd hh:mm:ss'
   const d = new Date(unix * 1000)
@@ -18,7 +18,8 @@ function unixToDate (unix, format) {
     S: d.getMilliseconds()
   }
   if (/(y+)/.test(_format)) _format = _format.replace(RegExp.$1, (d.getFullYear() + '').substr(4 - RegExp.$1.length))
-  for (const k in o) if (new RegExp('(' + k + ')').test(_format)) _format = _format.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
+  for (const k in o)
+    if (new RegExp('(' + k + ')').test(_format)) _format = _format.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
   return _format
 }
 /**
@@ -26,7 +27,7 @@ function unixToDate (unix, format) {
  * @param date
  * @returns {number} 【秒】
  */
-function dateToUnix (date) {
+function dateToUnix(date) {
   let newStr = date.replace(/:/g, '-')
   newStr = newStr.replace(/ /g, '-')
   const arr = newStr.split('-')
@@ -45,7 +46,7 @@ function dateToUnix (date) {
  * @param object
  * @returns {*}
  */
-function deepClone (object) {
+function deepClone(object) {
   let str
   let newobj = object.constructor === Array ? [] : {}
   if (typeof object !== 'object') {
@@ -68,7 +69,7 @@ function deepClone (object) {
  * @param price
  * @returns {string}
  */
-function formatPrice (price) {
+function formatPrice(price) {
   if (typeof price !== 'number') return price
   return String(Number(price).toFixed(2)).replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
@@ -78,7 +79,7 @@ function formatPrice (price) {
  * @param mobile
  * @returns {*}
  */
-function secrecyMobile (mobile) {
+function secrecyMobile(mobile) {
   mobile = String(mobile)
   if (!/\d{11}/.test(mobile)) {
     return mobile
@@ -91,7 +92,7 @@ function secrecyMobile (mobile) {
  * @param length
  * @returns {string}
  */
-function randomString (length = 32) {
+function randomString(length = 32) {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   const maxPos = chars.length
   let _string = ''
@@ -106,7 +107,7 @@ function randomString (length = 32) {
  * @param seconds
  * @returns {{day : *, hours : *, minutes : *, seconds : *}}
  */
-function countTimeDown (seconds) {
+function countTimeDown(seconds) {
   const leftTime = (time) => {
     if (time < 10) time = '0' + time
     return time + ''
@@ -123,11 +124,33 @@ function countTimeDown (seconds) {
  * 计算当前时间到第二天0点的倒计时[秒]
  * @returns {number}
  */
-export function theNextDayTime () {
+export function theNextDayTime() {
   const nowDate = new Date()
   const time = new Date(nowDate.getFullYear(), nowDate.getMonth(), nowDate.getDate() + 1, 0, 0, 0).getTime() - nowDate.getTime()
   return parseInt(time / 1000)
 }
+/**
+ * 将字符串复制到剪贴板
+ * 
+ * 点击的时候调用，传递字符串   copyToClipboard('Lorem ipsum');
+ */
+export function copyToClipboard() {
+  const el = document.createElement('textarea');
+  el.value = str;
+  el.setAttribute('readonly', '');
+  el.style.position = 'absolute';
+  el.style.left = '-9999px';
+  document.body.appendChild(el);
+  const selected =
+    document.getSelection().rangeCount > 0 ? document.getSelection().getRangeAt(0) : false;
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
+  if (selected) {
+    document.getSelection().removeAllRanges();
+    document.getSelection().addRange(selected);
+  }
+};
 
 export default {
   unixToDate,
@@ -137,5 +160,4 @@ export default {
   secrecyMobile,
   randomString,
   countTimeDown,
-  theNextDayTime
 }

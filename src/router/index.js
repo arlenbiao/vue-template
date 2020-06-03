@@ -9,6 +9,10 @@ export default new Router({
       path: '/',
       name: 'index',
       component: () => import('@/views/index/index.vue')
+    },{
+      path: '/demo',
+      name: 'demo',
+      component: () => import('@/views/demo/index.vue')
     }
   ]
 })
