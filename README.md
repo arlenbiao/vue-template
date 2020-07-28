@@ -13,13 +13,15 @@ npm install
 
 - js-cookie 
 
-- less 
+- sass 
 
-- less-loader 
+- sass-loader 
 
 - lodash
 
 - vue-router
+
+- Element-ui
 
 ### 状态管理vuex
 
@@ -29,6 +31,11 @@ npm install vuex --save
 import Vuex from 'vuex'
 
 Vue.use(Vuex)
+```
+
+### npm淘宝镜像设置
+```
+npm install -g cnpm --registry=https://registry.npm.taobao.org
 ```
 
 ## 第三方UI库
