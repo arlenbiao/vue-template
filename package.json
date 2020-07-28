@@ -18,9 +18,9 @@
     "babel-polyfill": "^6.26.0",
     "element-ui": "^2.13.2",
     "js-cookie": "^2.2.1",
-    "less": "^3.10.3",
-    "less-loader": "^5.0.0",
     "lodash": "^4.17.15",
+    "node-sass": "^4.14.1",
+    "sass-loader": "7.3.1",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
