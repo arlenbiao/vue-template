@@ -13,9 +13,9 @@ npm install
 
 - js-cookie 
 
-- sass 
+- node-sass
 
-- sass-loader 
+- sass-loader@7.3.1 
 
 - lodash
 

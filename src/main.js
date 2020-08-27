@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
-import '@/libs/response.js'
+// import '@/libs/response.js'
 import 'babel-polyfill'
 
 import ElementUI from 'element-ui'
