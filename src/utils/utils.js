@@ -51,3 +51,45 @@ export function lazyLoadImg (className) {
   }
   imgLoad(className)
 }
+// 打印'sb'
+export function printSB () {
+  console.log((!(~+[]) + {})[--[~+''][+[]] * [~+[]] + ~~!+[]] + ({} + [])[[~!+[]] * ~+[]])
+}
+// 打印'nb'
+export function printNB () {
+  console.log(([][[]] + [])[+!![]] + ([] + {})[!+[] + !![]])
+}
+// 给所有内容加边框
+export function addoutline () {
+  [].forEach.call($$('*'), function (a) {
+    a.style.outline = '1px solid #' + (~~(Math.random() * (1 << 24))).toString(16)
+  })
+}
+function isVisible (el) {
+  const position = el.getBoundingClientRect()
+  const windowHeight = document.documentElement.clientHeight
+  // 顶部边缘可见
+  const topVisible = position.top > 0 && position.top < windowHeight
+  // 底部边缘可见
+  const bottomVisible = position.bottom < windowHeight && position.bottom > 0
+  return topVisible || bottomVisible
+}
+
+// 图片懒加载
+export function imageLazyLoad () {
+  const images = document.querySelectorAll('img')
+  for (let img of images) {
+    const realSrc = img.dataset.src
+    if (!realSrc) continue
+    if (isVisible(img)) {
+      img.src = realSrc
+      img.dataset.src = ''
+    }
+  }
+}
+
+// // 测试
+// window.addEventListener('load', imageLazyLoad)
+// window.addEventListener('scroll', imageLazyLoad)
+// // or
+// window.addEventListener('scroll', throttle(imageLazyLoad, 1000))
