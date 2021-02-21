@@ -13,7 +13,7 @@ npm install
 
 - js-cookie 
 
-- node-sass
+- node-sass@4.14.1
 
 - sass-loader@7.3.1 
 
