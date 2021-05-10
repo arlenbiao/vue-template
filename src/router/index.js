@@ -7,6 +7,10 @@ export default new Router({
   routes: [
     {
       path: '/',
+      name: 'tables',
+      component: () => import('@/views/tables/index.vue')
+    }, {
+      path: '/index',
       name: 'index',
       component: () => import('@/views/index/index.vue')
     }, {
