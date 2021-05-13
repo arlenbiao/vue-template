@@ -6,7 +6,7 @@
           <div class="date-week" v-if="ri===0">
             <p><b>姓名</b> <em>日期</em></p>
           </div>
-          <div class="date-week" v-if="ri!==0">{{ritem.name}}</div>
+          <div class="date-week" v-if="ri!==0">{{ritem.userName}}</div>
         </div>
       </div>
       <div class="right-box">
@@ -14,10 +14,10 @@
           <div class="date-week" v-if="ri===0">
             <p><b>姓名</b> <em>日期</em></p>
           </div>
-          <div class="date-week" v-if="ri!==0">{{ritem.name}}</div>
+          <div class="date-week" v-if="ri!==0">{{ritem.userName}}</div>
           <div class="col" v-for="(citem, ci) in ritem.cols" :key="ci">
-            <span v-if="ri!==0" :class="[toClass(citem.status?citem.status:'3')]">
-              {{(citem.status?citem.status:'3')|toTxt }}</span>
+            <span v-if="ri!==0" :class="[toClass(citem.status?citem.status:3)]">
+              {{(citem.status?citem.status:3)|toTxt }}</span>
             <span v-else> {{citem.riqi | toDay}}<br>({{getWeek(citem.riqi)}})</span>
           </div>
         </div>
@@ -36,42 +36,8 @@ export default {
         cols: []
       }],
       list: [],
-      leadersList: [{
-        userid: 1, // 用户ID
-        name: '张三', // 姓名
-        date: '2021/05/10', // 日期  是时间戳还是什么
-        status: '4' //  状态 3 正常上班 1 请假  4 调休  2 出差
-      }, {
-        userid: 1, // 用户ID
-        name: '张三', // 姓名
-        date: '2021/05/12', // 日期  是时间戳还是什么
-        status: '2' //  状态 3 正常上班 1 请假  4 调休  2 出差
-      }, {
-        userid: 2, // 用户ID
-        date: '2021/05/13', // 日期  是时间戳还是什么
-        name: '李四', // 姓名
-        status: '1' //  状态 3 正常上班 1 请假  4 调休  2 出差
-      }, {
-        userid: 2, // 用户ID
-        date: '2021/05/16', // 日期  是时间戳还是什么
-        name: '李四', // 姓名
-        status: '2' //  状态 3 正常上班 1 请假  4 调休  2 出差
-      }, {
-        userid: 2, // 用户ID
-        date: '2021/05/14', // 日期  是时间戳还是什么
-        name: '李四', // 姓名
-        status: '2' //  状态 3 正常上班 1 请假  4 调休  2 出差
-      }, {
-        userid: 2, // 用户ID
-        date: '2021/05/15', // 日期  是时间戳还是什么
-        name: '李四', // 姓名
-        status: '3' // 状态 3 正常上班 1 请假  4 调休  2 出差
-      }, {
-        userid: 3, // 用户ID
-        date: '2021/05/10', // 日期  是时间戳还是什么
-        name: '王二麻子', // 姓名
-        status: '1' // 状态 3 正常上班 1 请假  4 调休  2 出差
-      }],
+      backList: [],
+      //  状态 3 正常上班 1 请假  4 调休  2 出差
       isLoad: true
     }
   },
@@ -88,16 +54,16 @@ export default {
     toTxt (status) {
       let str = ''
       switch (status) {
-        case '1':
+        case 1:
           str = '请假'
           break
-        case '2':
+        case 2:
           str = '出差'
           break
-        case '3':
+        case 3:
           str = '正常'
           break
-        case '4':
+        case 4:
           str = '假期'
           break
       }
@@ -127,16 +93,16 @@ export default {
     toClass (status) {
       let str = ''
       switch (status) {
-        case '1':
+        case 1:
           str = 'color1'
           break
-        case '2':
+        case 2:
           str = 'color2'
           break
-        case '3':
+        case 3:
           str = ''
           break
-        case '4':
+        case 4:
           str = 'color3'
           break
       }
@@ -144,25 +110,31 @@ export default {
     },
     structureData () {
       // 首先生成行第一行 名称
-      let Allroom = this.unique(this.leadersList)
+      let Allroom = this.unique(this.backList)
       for (let i = 0; i < Allroom.length; i++) {
         this.array.push({
-          name: Allroom[i].name,
-          userid: Allroom[i].userid,
+          userName: Allroom[i].userName,
+          userId: Allroom[i].userId,
           cols: []
         })
       }
       // 新建临时数组变量
+      let dateArray = this.backList.map(item => {
+        item.scheduleDate = item.scheduleDate.replace(/-/g, '/')
+        return item.scheduleDate
+      })
+      dateArray = [...new Set(dateArray)]
+      dateArray = dateArray.sort()
       // 根据日期生成列数据  --先循环原始数据
       // 现在是根据行数据渲染，所以
       // 1、先循环得到本周所有日期，放入第一行数据内
-      for (let c = 0; c < this.getWeekDay().length; c++) {
+      for (let c = 0; c < dateArray.length; c++) {
         this.array[0].cols.push({
-          riqi: this.getWeekDay()[c]
+          riqi: dateArray[c]
         })
       }
       // 2、生成列数据
-      let array1 = this.getWeekDay()
+      let array1 = dateArray
       for (let a = 0; a < Allroom.length; a++) {
         for (let b = 0; b < array1.length; b++) {
           this.array[a + 1].cols.push({
@@ -170,15 +142,15 @@ export default {
           })
         }
       }
-      for (let d = 0; d < this.leadersList.length; d++) {
+      for (let d = 0; d < this.backList.length; d++) {
         for (let e = 0; e < this.array.length; e++) {
           for (let f = 0; f < this.array[e].cols.length; f++) {
-            let time1 = ((new Date(this.array[e].cols[f].riqi).getTime()) / 1000) === ((new Date(this.leadersList[d]
-              .date).getTime()) / 1000)
-            if (this.leadersList[d].userid === this.array[e].userid && time1) {
+            debugger
+            let time1 = ((new Date(this.array[e].cols[f].riqi).getTime()) / 1000) === ((new Date(this.backList[d].scheduleDate).getTime()) / 1000)
+            if (this.backList[d].userId === this.array[e].userId && time1) {
               this.array[e].cols[f] = {
                 ...this.array[e].cols[f],
-                status: this.leadersList[d].status
+                status: this.backList[d].scheduleTypeCode
               }
             }
           }
@@ -205,7 +177,7 @@ export default {
     },
     unique (arr1) {
       const res = new Map()
-      return arr1.filter((a) => !res.has(a.userid) && res.set(a.userid, 1))
+      return arr1.filter((a) => !res.has(a.userId) && res.set(a.userId, 1))
     },
     isEmpty (obj) {
       if (typeof obj === 'undefined' || obj == null || obj === '') {
@@ -347,20 +319,24 @@ export default {
             font-style: normal;
             font-weight: unset;
             position: relative;
+            height: 70%;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
 
             &::after {
               position: absolute;
-              top: 20px;
+              top: 26px;
               left: 0;
               content: '';
               width: 200%;
               height: 1px;
               background: #ddd;
-              -webkit-transform: skewY(28deg);
-              -moz-transform: skewY(28deg);
-              -ms-transform: skewY(28deg);
-              -o-transform: skewY(28deg);
-              transform: skewY(28deg)
+              -webkit-transform: skewY(31deg);
+              -moz-transform: skewY(31deg);
+              -ms-transform: skewY(31deg);
+              -o-transform: skewY(31deg);
+              transform: skewY(31deg)
             }
           }
 
@@ -368,6 +344,7 @@ export default {
             display: inline-block;
             flex: 1;
             font-style: normal;
+            text-align: center;
           }
         }
 
